@@ -1,0 +1,90 @@
+{
+  "stages": {
+    "stage-1": {
+      "key": "input",
+      "input": {
+        "task-1": {
+          "type": "PRESTO",
+          "properties": {}
+        },
+        "task-2": {
+          "dependsOn": [
+            "task-1"
+          ],
+          "type": "HDFS",
+          "properties": {}
+        }
+      }
+    },
+    "stage-2": {
+      "dependsOn": [
+        "stage-1"
+      ],
+      "key": "transform",
+      "transform": {
+        "transform-1": {
+          "type": "FILTER",
+          "properties": {}
+        },
+        "transform-2": {
+          "type": "GROOVY",
+          "properties": {}
+        },
+        "transform-3": {
+          "dependsOn": [
+            "transform-2",
+            "transform-1"
+          ],
+          "type": "JOIN",
+          "properties": {}
+        }
+      }
+    },
+    "stage-3": {
+      "dependsOn": [
+        "stage-1"
+      ],
+      "key": "validation",
+      "validation": {
+        "validation-1": {
+          "type": "NULL_CHECK",
+          "properties": {
+          }
+        }
+      }
+    },
+    "stage-4": {
+      "dependsOn": [
+        "stage-3",
+        "stage-2"
+      ],
+      "key": "audit",
+      "audit": {
+        "audit-1": {
+          "storageType": "HDFS",
+          "properties": {}
+        },
+        "audit-2": {
+          "storageType": "S3",
+          "properties": {}
+        }
+      }
+    },
+    "stage-5": {
+      "dependsOn": [
+        "stage-4"
+      ],
+      "key": "sink",
+      "sink": {
+        "sink-1": {
+          "type": "KAFKA",
+          "properties": {}
+        },
+        "sink-2": {
+          "type": "SFTP",
+          "properties": {}
+        }
+      }
+    }
+  }
+}
