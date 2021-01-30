@@ -63,23 +63,22 @@ public class JobScheduler {
             stringBuilder.append(String.valueOf("<" + integer.getAndAdd(1) + ">" + "." + x.stream().collect(Collectors.joining("||")).toString() + "\n"));
         });
         stringBuilder.append("*************************");
-        System.err.println(stringBuilder);
+        System.out.println(stringBuilder);
     }
 
     public void showDetailedPlan() {
         AtomicInteger integer = new AtomicInteger(1);
-        final StringBuilder stringBuilder = new StringBuilder("*************************\n");
+        final StringBuilder stringBuilder = new StringBuilder("\n");
         this.dag.getStageExecutionOrder().forEach(x -> {
-            stringBuilder.append("------------------------------------------------------\n");
+            stringBuilder.append("\n~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             stringBuilder.append("<" + integer.getAndAdd(1) + ">" + "." + x.stream().collect(Collectors.joining("||")).toString() + "\n");
-            stringBuilder.append("------------------------------------------------------\n");
+            stringBuilder.append("~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
             x.forEach(st -> appendTaskPlan(stringBuilder, st));
-            stringBuilder.append("======================================================\n");
+//            stringBuilder.append("======================================================\n");
 
         });
-        stringBuilder.append("*************************");
-        System.err.println(stringBuilder);
+        System.out.println(stringBuilder);
     }
 
     public void appendTaskPlan(StringBuilder stringBuilder, String stageName) {
@@ -98,7 +97,7 @@ public class JobScheduler {
         while (dag.hasPendingStages()) {
 
             final Set<String> nextStageToExecute = dag.getNextStageToExecute();
-
+            System.out.println("----------Executing Stage "+nextStageToExecute+" ----------");
             nextStageToExecute.parallelStream().forEach(stageName -> {
                 this.taskScheduler.submitTask(this.dag.getTasksForStages(stageName));
             });

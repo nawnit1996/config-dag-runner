@@ -18,6 +18,6 @@ public class Task {
     }
 
     void execute() {
-        System.err.println("Executing task : " + taskId);
+        System.out.println("Executing task : " + taskId);
     }
 }

@@ -18,8 +18,10 @@ public class TestClass {
 
 
         final JobScheduler jobScheduler = new JobScheduler(new TaskScheduler(),jsonStr);
-
+        System.out.println("---------< Execution Plan >---------");
         jobScheduler.explain(true);
+        System.err.println();
+        System.out.println("------< Executing Stages >-------");
         jobScheduler.executeDag();
 
     }
